@@ -230,8 +230,8 @@ class human
   end
 end
 
-jim = human.new('jim halpert')
-dwight = human.new('dwight k schrute')
+jim = Human.new('jim halpert')
+dwight = Human.new('dwight k schrute')
 jim.species
 jim.name
 jim.name = "jim halpert ii"
@@ -239,7 +239,7 @@ jim.name
 dwight.species
 dwight.name
 
-human ,say('hi')
+Human ,say('hi')
 
 $var = "I'm an instance var"
 defined? $var
@@ -252,3 +252,89 @@ defined? @@var
 
 Var = "I'm an constant"
 defined? Var
+
+class Human
+  @@foo = 0
+  def self.foods
+    @@foo
+  end
+
+  def self.foo=(value)
+    @foo = value
+  end
+end
+
+class worker < Human
+end
+
+Human.foo
+worker.foo
+
+Human.foo = 2
+worker.foo
+
+class Human
+  @bar = 0
+
+  def self.bar
+    @bar
+  end
+
+  def self.bar=(value)
+    @bar = value
+  end
+end
+
+class Doctor < Human
+end
+
+Human.bar
+Doctor.bar
+
+module ModuleExample
+  def foo
+    'foo'
+  end
+end
+
+class Person
+  include ModuleExample
+end
+
+class Book
+  extend ModuleExample
+end
+
+Person.foo
+Person.new.foo
+Book.foo
+Book.new.foo
+
+module ConcernExample
+  def self.included(base)
+    base.extend(ClassMethods)
+    base.send(:include, InstanceMethods)
+  end
+
+  module ClassMethods
+    def bar
+      'bar'
+    end
+  end
+
+  module InstanceMethods
+    def qux
+      'qux'
+    end
+  end
+end
+
+class  Something
+  include ConcernExample
+end
+
+Something.bar
+Something.qux
+Something.new.bar
+Something.new.qux
+#终于打完了
